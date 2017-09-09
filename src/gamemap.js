@@ -1,15 +1,15 @@
-var height=44;
-var width=44;
+var height=30;
+var width=30;
 var chanceToStartAlive = 0.39;
 var deathlimit = 3;
 var birthlimit = 4;
 var cellMap=[];
-             
-function clearMap(){
-  cellMap=[];
-  for(var i=0;i<width;i++){
-    cellMap[i]=[];
-  }
+var visibility = 4;
+
+function generateGameMap() {
+  do{
+   generateMap();
+  } while(!floodFill())
 }
 
 function generateMap(){
@@ -35,35 +35,13 @@ function generateMap(){
   }
 }
 
-function generateGameMap() {
-  do{
-   generateMap();
-  } while(!floodFill())
-}
-
-function displayMap(){
-  var canvas= document.getElementById("p1");
-  var ctx=canvas.getContext("2d");
-  ctx.fillStyle="white";
-  ctx.fillRect(10,10,width*10,height*10);
-  for (var i = 0; i < width; i++) {
-    for (var j = 0; j < height; j++) {
-      if (cellMap[i][j]==1) {
-        ctx.fillStyle="black";
-        ctx.fillRect(10+(i*10),10+(j*10),10,10);
-      } else {
-        ctx.fillStyle="blue";
-        ctx.fillRect(10+(i*10),10+(j*10),10,10);
-      }
-    }
+function clearMap(){
+  cellMap=[];
+  for(var i=0;i<width;i++){
+    cellMap[i]=[];
   }
 }
-
-window.onload= function game(){
-  generateGameMap();
-  displayMap();
-}
-
+  
 function runSimulation(){
   var tempMap = [];
   for(var i=0;i<width;i++){
@@ -86,7 +64,7 @@ function runSimulation(){
       }
     }
   }
-  cellMap=tempMap;
+  cellMap=JSON.parse(JSON.stringify(tempMap));
 }
 
 function countAliveNeighbours(x,y){
@@ -105,7 +83,7 @@ function floodFill(){
   var y;
   var t;
   var queue = [];
-  var tempMap = cellMap;
+  var tempMap = JSON.parse(JSON.stringify(cellMap));
   outerloop:
   for(var i=0;i<width;i++){
     for(var j=0;j<height;j++){
@@ -130,4 +108,79 @@ function floodFill(){
     }
   }
   return true;
+}
+
+function getVisibleMap(x,y){
+	var visibleMap = [];
+	var tempx;
+	var tempy;
+	for(var i=0;i<(2*visibility+1);i++){
+		visibleMap[i]=[];
+	}
+	for(var i=0;i<(2*visibility+1);i++){	
+		for(var j=0;j<(2*visibility+1);j++){	
+			tempx= x-visibility+i;
+			tempy= y-visibility+j;
+			if(tempx<0||tempy<0||tempx>=width||tempy>=height){
+				visibleMap[i][j]=1;	
+			} else {
+				visibleMap[i][j]=cellMap[tempx][tempy];	
+			}	
+		}
+	}
+	return visibleMap;
+}
+
+function displayMap(){
+  var canvas= document.getElementById("p1");
+  var ctx=canvas.getContext("2d");
+  ctx.fillStyle="white";
+  ctx.fillRect(10,10,width*10,height*10);
+  for (var i = 0; i < width; i++) {
+    for (var j = 0; j < height; j++) {
+      if (cellMap[i][j]==1) {
+        ctx.fillStyle="black";
+        ctx.fillRect((i*10),(j*10),10,10);
+      } else if (cellMap[i][j]==0) {
+        ctx.fillStyle="blue";
+        ctx.fillRect((i*10),(j*10),10,10);
+      } else {
+        ctx.fillStyle="white";
+        ctx.fillRect((i*10),(j*10),10,10);
+      }
+    }
+  }
+}
+
+function displayVisibleMap(pnum){
+  var canvas= document.getElementById("pl"+pnum);
+  var ctx=canvas.getContext("2d");
+  var visiMap = getVisibleMap(playerPosition[pnum][0],playerPosition[pnum][1]);
+  ctx.fillStyle="white";
+  ctx.fillRect(10,10,width*10,height*10);
+  for (var i = 0; i < 2*visibility+1 ; i++) {
+    for (var j = 0; j <2*visibility+1 ; j++) {
+      if (visiMap[i][j]==1) {
+        ctx.fillStyle="black";
+        ctx.fillRect((i*50),(j*50),50,50);
+      } else if (visiMap[i][j]==0) {
+        ctx.fillStyle="blue";
+        ctx.fillRect((i*50),(j*50),50,50);
+      } else {
+        ctx.fillStyle="white";
+        ctx.fillRect((i*50),(j*50),50,50);
+      }
+    }
+  }
+}
+
+function display(){
+	displayMap();
+	displayVisibleMap(0);
+	displayVisibleMap(1);
+}
+
+function gameOver(){
+	alert("game Over");
+	gameStart();
 }
