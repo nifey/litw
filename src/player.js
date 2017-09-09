@@ -1,12 +1,12 @@
 var playerPosition = [];
-var initialDistance = 350;
+var initialDistance = 2000;
 
 function placePlayers(){
 	playerPosition=[];
 	var p = getRandomPoint();
 	do{
 		var q= getRandomPoint();	
-	}while(calculateDistance(p[0],p[1],q[0],q[1])<initialDistance);	
+	}while(calculateDistance(p[0],p[1],q[0],q[1])>initialDistance);	
 	playerPosition.push(p);
 	playerPosition.push(q);
 	cellMap[playerPosition[0][0]][playerPosition[0][1]]=2;
@@ -33,7 +33,10 @@ function movePlayer(player,direction){
 		break;
 	}
 	var flag=false;
-	if(cellMap[newx][newy]==2){gameOver();}
+	if(cellMap[newx][newy]==2){
+		cellMap[newx][newy]=0;
+		gameOver();
+	}
 	if(cellMap[newx][newy]==0){
 		cellMap[tempx][tempy]=0;
 		cellMap[newx][newy]=2;

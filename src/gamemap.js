@@ -1,5 +1,5 @@
-var height=30;
-var width=30;
+var height=50;
+var width=50;
 var chanceToStartAlive = 0.39;
 var deathlimit = 3;
 var birthlimit = 4;
@@ -97,7 +97,7 @@ function floodFill(){
     t= queue.pop();
     x=t[0]; y=t[1];
     if(tempMap[x][y]==0){
-      tempMap[x][y]=2;
+      tempMap[x][y]=3;
       queue.push([x-1,y],[x+1,y],[x,y-1],[x,y+1]);
     }
   } 
