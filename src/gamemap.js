@@ -131,6 +131,7 @@ function getVisibleMap(x,y){
 	return visibleMap;
 }
 
+/*
 function displayMap(){
   var canvas= document.getElementById("p1");
   var ctx=canvas.getContext("2d");
@@ -151,8 +152,30 @@ function displayMap(){
     }
   }
 }
+*/
 
 function displayVisibleMap(pnum){
+  var canvas= document.getElementById("pl"+pnum);
+  var ctx=canvas.getContext("2d");
+  var visiMap = getVisibleMap(playerPosition[pnum][0],playerPosition[pnum][1]);
+  var sprite = new Image();
+  sprite.src="src/lost.png";
+  ctx.fillStyle="grey";
+  ctx.fillRect(0,0,width*10,height*10);
+  for (var i = 0; i < 2*visibility+1 ; i++) {
+    for (var j = 0; j <2*visibility+1 ; j++) {
+      if (visiMap[i][j]==1) {
+	ctx.drawImage(sprite,0,0,32,32,(i*50),(j*50),50,50);
+      } else if (visiMap[i][j]==0) {
+	ctx.drawImage(sprite,32,0,32,32,(i*50),(j*50),50,50);
+      } else {
+	ctx.drawImage(sprite,64,0,32,32,(i*50),(j*50),50,50);
+      }
+    }
+  }
+}
+
+/*function displayVisibleMap(pnum){
   var canvas= document.getElementById("pl"+pnum);
   var ctx=canvas.getContext("2d");
   var visiMap = getVisibleMap(playerPosition[pnum][0],playerPosition[pnum][1]);
@@ -172,10 +195,10 @@ function displayVisibleMap(pnum){
       }
     }
   }
-}
+}*/
 
 function display(){
-	displayMap();
+//	displayMap();
 	displayVisibleMap(0);
 	displayVisibleMap(1);
 }

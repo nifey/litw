@@ -34,7 +34,6 @@ function movePlayer(player,direction){
 	}
 	var flag=false;
 	if(cellMap[newx][newy]==2){
-		cellMap[newx][newy]=0;
 		gameOver();
 	}
 	if(cellMap[newx][newy]==0){
