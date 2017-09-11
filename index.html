@@ -9,7 +9,16 @@
 <link rel="stylesheet" href="src/index.css">
 </head>
 <body>
+<div id="m" style="text-align:center;color:white;">
+<h1>Lost in the woods</h1>
+<br><br><br>
+<p>Two friends are lost in a haunted woods.<br> Help them find each other while avoiding tree monsters.<br><br> Controls:<br>Player1 : w  a  s  d  <br>Player2 : arrow keys </p>
+<input type="button" onclick="document.getElementById('g').style='display:block';document.getElementById('m').style='display:none';gameStart();" value="Play">
+</div>
+<div id="g" style="display:none;">
 <canvas id="pl0" width="500px" height="500px"></canvas>
 <canvas id="pl1" width="500px" height="500px"></canvas>
+</div>
+<div id="e" style="clear:both;text-align:center;color:white;"></div>
 </body>
 </html>

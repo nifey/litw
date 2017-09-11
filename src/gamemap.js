@@ -4,7 +4,8 @@ var chanceToStartAlive = 0.39;
 var deathlimit = 3;
 var birthlimit = 4;
 var cellMap=[];
-var visibility = 4;
+var visibility = 3;
+var bushesToTreesRatio=0.2;
 
 function generateGameMap() {
   do{
@@ -33,6 +34,15 @@ function generateMap(){
     else 
       runSimulation();
   }
+  for (var i = 0; i < width; i++) {
+    for (var j = 0; j < height; j++) {
+	if(cellMap[i][j]==1){
+		if(Math.random()<bushesToTreesRatio){
+			cellMap[i][j]=4;
+		}
+	}
+    }
+  } 
 }
 
 function clearMap(){
@@ -145,6 +155,12 @@ function displayMap(){
       } else if (cellMap[i][j]==0) {
         ctx.fillStyle="blue";
         ctx.fillRect((i*10),(j*10),10,10);
+      } else if (cellMap[i][j]==3) {
+        ctx.fillStyle="red";
+        ctx.fillRect((i*10),(j*10),10,10);
+      } else if (cellMap[i][j]==4) {
+        ctx.fillStyle="orange";
+        ctx.fillRect((i*10),(j*10),10,10);
       } else {
         ctx.fillStyle="white";
         ctx.fillRect((i*10),(j*10),10,10);
@@ -160,42 +176,30 @@ function displayVisibleMap(pnum){
   var visiMap = getVisibleMap(playerPosition[pnum][0],playerPosition[pnum][1]);
   var sprite = new Image();
   sprite.src="src/lost.png";
-  ctx.fillStyle="grey";
-  ctx.fillRect(0,0,width*10,height*10);
+  ctx.fillStyle="#0c4d19";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  var l= canvas.width/(2*visibility+1);
   for (var i = 0; i < 2*visibility+1 ; i++) {
     for (var j = 0; j <2*visibility+1 ; j++) {
       if (visiMap[i][j]==1) {
-	ctx.drawImage(sprite,0,0,32,32,(i*50),(j*50),50,50);
+	ctx.drawImage(sprite,0,0,32,32,(i*l),(j*l),l,l);
       } else if (visiMap[i][j]==0) {
-	ctx.drawImage(sprite,32,0,32,32,(i*50),(j*50),50,50);
+	ctx.drawImage(sprite,32,0,32,32,(i*l),(j*l),l,l);
+      } else if (visiMap[i][j]==3) {
+	ctx.drawImage(sprite,128,0,32,32,(i*l),(j*l),l,l);
+      } else if (visiMap[i][j]==4) {
+	ctx.drawImage(sprite,96,0,32,32,(i*l),(j*l),l,l);
       } else {
-	ctx.drawImage(sprite,64,0,32,32,(i*50),(j*50),50,50);
+	ctx.drawImage(sprite,64,0,32,32,(i*l),(j*l),l,l);
       }
     }
   }
+  var grad= ctx.createRadialGradient(canvas.width/2,canvas.height/2,20,canvas.width/2,canvas.height/2,canvas.width/1.75);
+  grad.addColorStop(0,"transparent");
+  grad.addColorStop(1,"#03000d");
+  ctx.fillStyle= grad;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 }
-
-/*function displayVisibleMap(pnum){
-  var canvas= document.getElementById("pl"+pnum);
-  var ctx=canvas.getContext("2d");
-  var visiMap = getVisibleMap(playerPosition[pnum][0],playerPosition[pnum][1]);
-  ctx.fillStyle="white";
-  ctx.fillRect(10,10,width*10,height*10);
-  for (var i = 0; i < 2*visibility+1 ; i++) {
-    for (var j = 0; j <2*visibility+1 ; j++) {
-      if (visiMap[i][j]==1) {
-        ctx.fillStyle="black";
-        ctx.fillRect((i*50),(j*50),50,50);
-      } else if (visiMap[i][j]==0) {
-        ctx.fillStyle="blue";
-        ctx.fillRect((i*50),(j*50),50,50);
-      } else {
-        ctx.fillStyle="white";
-        ctx.fillRect((i*50),(j*50),50,50);
-      }
-    }
-  }
-}*/
 
 function display(){
 //	displayMap();
@@ -203,7 +207,19 @@ function display(){
 	displayVisibleMap(1);
 }
 
-function gameOver(){
-	alert("game Over");
-	gameStart();
+function gameOver(opt){
+	var o = document.getElementById('g');
+	o.style="display:none;";
+	var r = document.getElementById('e');
+	if(opt)
+	r.innerHTML="<br><br><br><br>You were killed by a tree monster";
+	else
+	r.innerHTML="<br><br><br><br>Finally together";
+	r.innerHTML+="<br><br><br><br><input type='button' value='Restart' onclick='gameStart();clearDiv();'>";
+}
+
+function clearDiv(){
+	document.getElementById('e').innerHTML="";
+	var o = document.getElementById('g');
+	o.style="display:block;";
 }
