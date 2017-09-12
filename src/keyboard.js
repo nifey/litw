@@ -17,6 +17,18 @@ document.onkeydown = function (e) {
 		pressedKeys['37']=true;
 	} else if(e.keyCode==39){
 		pressedKeys['39']=true;
+	} else if(e.keyCode==13){
+		var m= document.getElementById('m');
+		var e= document.getElementById('e');
+		var g= document.getElementById('g');
+		if(m.style.display!='none'){
+			g.style.display='block';	
+			m.style.display='none';	
+			gameStart();
+		} else if(e.style.display!='none'){
+			gameStart();
+			clearDiv();
+		}
 	}
 }
 

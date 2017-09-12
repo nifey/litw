@@ -1,6 +1,6 @@
 var playerPosition = [];
 var monsterPosition = [];
-var numberOfMonsters = 7;
+var numberOfMonsters = 9;
 var initialDistance = 2000;
 
 function placePlayers(){

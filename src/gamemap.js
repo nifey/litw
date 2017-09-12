@@ -208,18 +208,21 @@ function display(){
 }
 
 function gameOver(opt){
-	var o = document.getElementById('g');
-	o.style="display:none;";
-	var r = document.getElementById('e');
+	var g = document.getElementById('g');
+	g.style="display:none;";
+	var e = document.getElementById('e');
+	e.style="display:block;";
 	if(opt)
-	r.innerHTML="<br><br><br><br>You were killed by a tree monster";
+	e.innerHTML="<br><br><br><br><h2>You were killed by a tree monster</h2>";
 	else
-	r.innerHTML="<br><br><br><br>Finally together";
-	r.innerHTML+="<br><br><br><br><input type='button' value='Restart' onclick='gameStart();clearDiv();'>";
+	e.innerHTML="<br><br><br><br><h2>Finally together</h2>";
+	e.innerHTML+="<br><br><h3>Press ENTER to restart</h3>";
 }
 
 function clearDiv(){
 	document.getElementById('e').innerHTML="";
-	var o = document.getElementById('g');
-	o.style="display:block;";
+	var g = document.getElementById('g');
+	g.style="display:block;";
+	var e = document.getElementById('e');
+	e.style="display:none;";
 }
