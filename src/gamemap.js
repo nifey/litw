@@ -208,6 +208,7 @@ function display(){
 }
 
 function gameOver(opt){
+	play=false;
 	var g = document.getElementById('g');
 	g.style.display='none';
 	var e = document.getElementById('e');

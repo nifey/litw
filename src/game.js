@@ -1,10 +1,11 @@
 function gameStart(){
+	play=true;
 	clearKeys();
 	generateGameMap();
 	placePlayers();
 	placeMonsters();
 	display();
 }
-
-setInterval("update()",100);
-setInterval("moveMonsters();",250);
+var play=false;
+setInterval("if(play)update()",100);
+setInterval("if(play)moveMonsters();",250);
