@@ -209,9 +209,9 @@ function display(){
 
 function gameOver(opt){
 	var g = document.getElementById('g');
-	g.style="display:none;";
+	g.style.display='none';
 	var e = document.getElementById('e');
-	e.style="display:block;";
+	e.style.display='block';
 	if(opt)
 	e.innerHTML="<br><br><br><br><h2>You were killed by a tree monster</h2>";
 	else
@@ -222,7 +222,7 @@ function gameOver(opt){
 function clearDiv(){
 	document.getElementById('e').innerHTML="";
 	var g = document.getElementById('g');
-	g.style="display:block;";
+	g.style.display='block';
 	var e = document.getElementById('e');
-	e.style="display:none;";
+	e.style.display='none';
 }
